@@ -18,12 +18,21 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShiftCipher.cpp">
+    <ClCompile Include="CipherText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Decipher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ShiftCipher.h">
+    <ClInclude Include="SubText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CipherText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Decipher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

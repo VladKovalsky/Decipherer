@@ -20,8 +20,6 @@ private:
 	std::vector<SubText> monograms;
 	std::vector<SubText> bigrams;
 	std::vector<SubText> trigrams;
-	
-	std::vector<SubText*> textComp;
 
 	std::vector<SubText> orderedMonograms;
 

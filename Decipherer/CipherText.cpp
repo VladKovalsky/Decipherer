@@ -21,8 +21,8 @@ void CipherText::buildModifiedText() {
 
 	this->modifiedText = "";
 
-	for (i = 0; i < textComp.size(); i++) {
-		modifiedText.push_back(textComp[i]->getString()[0]);
+	for (i = 0; i < originalText.size(); i++) {
+		modifiedText.push_back(monograms[originalText[i] - 65].getString()[0]);
 	}
 
 	std::cout << "Current text: " << std::endl;
@@ -33,7 +33,6 @@ void CipherText::swapLetters(int loc1, int loc2){
 	std::string temp (this->monograms[loc1].getString());
 	this->monograms[loc1].setString(this->monograms[loc2].getString());
 	this->monograms[loc2].setString(temp);
-
 	std::cout << "Swapped " << this->monograms[loc2].getString() << " with " << this->monograms[loc1].getString() << ":" << std::endl;
 }
 
@@ -72,14 +71,6 @@ void CipherText::createComponents() {
 	}
 
 	setFrequencies();
-
-	//crate a vectored form of original text using the monograms
-	for (i = 0; i < originalText.size(); i++) {
-		SubText *temp = &monograms.at(originalText.at(i) - 65);
-		textComp.push_back(temp);
-	}
-
-
 }
 
 void CipherText::setFrequencies() {

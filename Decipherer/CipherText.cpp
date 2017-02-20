@@ -9,7 +9,7 @@ CipherText::CipherText(std::string text) {
 	createComponents();
 
 	order();
-
+	//test
 	buildModifiedText();
 	std::cout << "Cypher text obtained from file: " << std::endl;
 	std::cout << this->modifiedText << std::endl;

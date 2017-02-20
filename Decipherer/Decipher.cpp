@@ -1,5 +1,4 @@
 #include "Decipher.h"
-#include <algorithm>
 void Shift_Cipher(CipherText cipher)
 {
 	char userInput = ' ';
@@ -8,7 +7,7 @@ void Shift_Cipher(CipherText cipher)
 	int i = 0;
 	std::vector<SubText> orderMono = cipher.getOrderedMonograms();
 	while (userInput != 'q') {
-		std::cout << "Enter s (shift), f (monogram frequencies), or q (quit) ";
+		std::cout << "Enter s (shift), f (monogram frequencies), p (print plaintext to shift.txt), or q (quit) ";
 		std::cin >> userInput;
 		switch (userInput)
 		{
@@ -29,6 +28,17 @@ void Shift_Cipher(CipherText cipher)
 			break;
 
 		}
+
+		case 'p': {
+			std::ofstream outp("shift.txt");
+			outp << cipher.getModifiedText();
+			outp.close();
+
+			std::cout << "Plaintext printed to shift.txt in the root project directory" << std::endl;
+
+			break;
+		}
+
 		case 'f':
 		{
 			cipher.printMonogramFrequency();
@@ -42,16 +52,15 @@ void Shift_Cipher(CipherText cipher)
 }
 void Substitution_Cipher(CipherText cipher) {
 	char userInput = ' ';
-	char FROM, FROM2, FROM3 = NULL;
-	char TO, TO2, TO3 = NULL;
+	std::string FROM;
+	std::string TO;
 	std::vector<int> temp;
 	std::string modified = cipher.getModifiedText();
 	std::string original = cipher.getOriginalText();
 	std::cout << original << std::endl;
-	//	std::vector<SubText> orderMono = cipher.getOrderedMonograms();
-	//	std::vector<SubText> orderMono = cipher.getOrderedMonograms();
 	while (userInput != 'q') {
-		std::cout << "Enter f(Show frequency of monograms,bigrams, and trigrams) or q (quit) ";
+		std::cout << "Enter f(Show frequency of monograms,bigrams, and trigrams), p (print plaintext to substitution.txt)" << std::endl;
+		std::cout << "k (if you know the keys) ,or q(quit) ";
 		std::cin >> userInput;
 		switch (userInput)
 		{
@@ -60,16 +69,31 @@ void Substitution_Cipher(CipherText cipher) {
 			cipher.printMonogramFrequency(); std::cout << std::endl;
 			cipher.printBigramFrequency(); std::cout << std::endl;
 			cipher.printTrigramFrequency(); std::cout << std::endl;
-			std::cout << "Type in 1 letter and switch from ";
+			std::cout << "Type in the letters of the cipher text that you want to change: " << std::endl;
 			std::cin >> FROM;
-			std::cout << "to ";
+			std::cout << "Type in the letters that you want to change to:" << std::endl;
 			std::cin >> TO;
-			for (int i = 0; i < original.size(); i++) { //make sure the modified text does not mix with the original text
-				if (FROM == original[i]) {
-					modified[i] = TO;
+			for (int i = 0; i < FROM.size(); i++) {
+				for (int j = 0; j < original.size(); j++) { //make sure the modified text does not mix with the original text
+					if (FROM[i] == original[j]) {
+						modified[j] = TO[i];
+					}
 				}
-			} 
+			}
 			std::cout << modified << std::endl;
+			break;
+		}
+		case 'k':
+		{
+
+		}
+		case 'p': {
+			std::ofstream outp("substitution.txt");
+			outp << cipher.getModifiedText();
+			outp.close();
+
+			std::cout << "Plaintext printed to substitution.txt in the root project directory" << std::endl;
+
 			break;
 		}
 
@@ -77,10 +101,6 @@ void Substitution_Cipher(CipherText cipher) {
 			break;
 		}
 	}
-
-
-
-
 }
 
 void Vigenere_Cipher(CipherText cipher){
@@ -97,7 +117,7 @@ void Vigenere_Cipher(CipherText cipher){
 	int userLength = 0;
 	int recShift = 0;
 	while (userInput != 'q') {
-		std::cout << "Enter l (key length guess), s (substring based on key length), d (decrypt with key), f (monogram frequencies), b (bigram frequencies), or q (quit) ";
+		std::cout << "Enter l (key length guess), s (substring based on key length), d (decrypt with key), f (monogram frequencies), b (bigram frequencies), p (print plaintext to vigenere.txt), or q (quit) ";
 		std::cin >> userInput;
 		switch (userInput)
 		{
@@ -186,7 +206,6 @@ void Vigenere_Cipher(CipherText cipher){
 			//Now create ciphers with the strings (to use pre-built functions)
 			std::vector<CipherText> keySplitSubTexts;
 			for (i = 0; i < keySplitStrings.size(); i++) keySplitSubTexts.push_back(CipherText(keySplitStrings[i]));
-			keySplitStrings.clear();
 			
 			//Print the most common letter in each substring
 			std::cout << "Most common letter in each substring" << std::endl;
@@ -201,8 +220,6 @@ void Vigenere_Cipher(CipherText cipher){
 				std::cout << char('A' + recShift);
 			}
 			std::cout << std::endl;
-
-			keySplitSubTexts.clear();
 			break;
 		}
 
@@ -214,6 +231,16 @@ void Vigenere_Cipher(CipherText cipher){
 			cipher.buildModifiedText(userString);
 
 			std::cout << cipher.getModifiedText() << std::endl;
+			break;
+		}
+
+		case 'p': {
+			std::ofstream outp("vigenere.txt");
+			outp << cipher.getModifiedText();
+			outp.close();
+
+			std::cout << "Plaintext printed to vigenere.txt in the root project directory" << std::endl;
+
 			break;
 		}
 
@@ -239,7 +266,7 @@ void Permutation_Cipher(CipherText cipher) {
 	int keyLen = 0;
 	std::vector<SubText> orderPermu = cipher.getOrderedMonograms();
 	while (userInput != 'q') {
-		std::cout << "Enter m (monogram frequencies), b (bigram frequencies), t (trigram frequencies) or q (quit) ";
+		std::cout << "Enter m (monogram frequencies), b (bigram frequencies), t (trigram frequencies), p (print plaintext to permutation.txt), or q (quit) ";
 		std::cin >> userInput;
 		switch (userInput)
 		{
@@ -257,6 +284,17 @@ void Permutation_Cipher(CipherText cipher) {
 
 			break;
 		}
+
+		case 'p': {
+			std::ofstream outp("permutation.txt");
+			outp << cipher.getModifiedText();
+			outp.close();
+
+			std::cout << "Plaintext printed to permutation.txt in the root project directory" << std::endl;
+
+			break;
+		}
+
 		case 't':
 		{
 			cipher.printTrigramFrequency(); std::cout << std::endl;

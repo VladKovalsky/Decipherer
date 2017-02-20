@@ -12,6 +12,7 @@
 #include "Decipher.h"
 int main(int argc, char* argv[]) {
 
+	std::cout << argc;
 	if (argc != 3) {
 		std::cout << "Correct usage: Decipherer inputFile outputFile" << std::endl;
 		return -1;
@@ -19,14 +20,14 @@ int main(int argc, char* argv[]) {
 
 	std::string inputText = "";
 	std::ifstream inp(argv[1]);
-	if(!inp) {
+	if (!inp) {
 		std::cout << "File could not be found" << std::endl;
 		return -1;
 	}
 
 	getline(inp, inputText);
 
-	CipherText cipher(inputText);
+	//	CipherText cipher(inputText);
 
 	char userInput = ' ';
 
@@ -36,8 +37,17 @@ int main(int argc, char* argv[]) {
 
 		switch (userInput) {
 		case '1':
+		{
+			CipherText cipher(inputText, 1);
 			Shift_Cipher(cipher);
+			break;
 		}
+		case '2': {
+			Substitution_Cipher(inputText);
+			break;
+		}
+		}
+
 	}
 
 	inp.close();

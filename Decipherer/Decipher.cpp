@@ -41,10 +41,6 @@ void Shift_Cipher(CipherText cipher)
 }
 void Substitution_Cipher(CipherText cipher) {
 	char userInput = ' ';
-	int shiftAmount = 0;
-	int recShift = 0;
-	int i = 0;
-	char quit = NULL;
 	char FROM, FROM2, FROM3 = NULL;
 	char TO, TO2, TO3 = NULL;
 	std::string input = cipher.getOriginalText();
@@ -99,5 +95,40 @@ void Substitution_Cipher(CipherText cipher) {
 
 
 
+
+}
+void Permutation_Cipher(CipherText cipher) {
+	char userInput = ' ';
+	int keyLen = 0;
+	std::vector<SubText> orderPermu = cipher.getOrderedMonograms();
+	while (userInput != 'q') {
+		std::cout << "Enter m (monogram frequencies), b (bigram frequencies), t (trigram frequencies) or q (quit) ";
+		std::cin >> userInput;
+		switch (userInput)
+		{
+		case 'm':
+		{
+			cipher.printMonogramFrequency(); std::cout << std::endl;
+			std::cout << "Propose key length:"; std::cin >> keyLen;
+			cipher.permuteData(keyLen);
+			break;
+		}
+		case 'b':
+		{
+			cipher.printBigramFrequency(); std::cout << std::endl;
+			std::cout << "Propose key length:"; std::cin >> keyLen;
+
+			break;
+		}
+		case 't':
+		{
+			cipher.printTrigramFrequency(); std::cout << std::endl;
+			std::cout << "Propose key length:"; std::cin >> keyLen;
+			break;
+		}
+		default:
+			break;
+		}
+	}
 
 }

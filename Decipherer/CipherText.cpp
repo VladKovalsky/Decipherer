@@ -2,6 +2,7 @@
 
 #include "CipherText.h"
 
+
 CipherText::CipherText(std::string text) {
 	this->originalText = text;
 	this->modifiedText = "";
@@ -171,6 +172,40 @@ void CipherText::order()
 	}
 }
 
-std::string CipherText::getOriginalText() {
-	return this->originalText;
+std::string CipherText::getOriginalText() {return this->originalText;}
+std::string CipherText::getModifiedText() {return this->modifiedText;};
+
+void CipherText::permuteData(int key) {
+	std::string permuteData = this->originalText;
+	std::vector<std::vector<char>> TwoDVector;
+	int i, j ,k = 0;
+	int flag = 0;
+	for (i = 0; k < permuteData.size(); i++) {
+		std::vector<char>temp;
+		for (j = 0; j < key; j++) {
+			if (flag == 1) {
+				break;
+			}
+			if (permuteData[k] == NULL) {
+				flag = 1;
+				temp.push_back ('-');
+			}
+			else {
+				temp.push_back(permuteData[k]);
+				k++;
+			}
+		}
+		TwoDVector.push_back(temp);
+	}
+	for (i = 0; i < TwoDVector.size(); i++) {
+		for (j = 0; j < key; j++) {
+			if (TwoDVector[i][j] == '-') {
+				break;
+			}
+			else{
+				std::cout << TwoDVector[i][j];
+			}
+		}
+		std::cout << std::endl;
+	}
 }

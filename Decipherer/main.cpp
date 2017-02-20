@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 	char userInput = ' ';
 
 	while (userInput != 'q') {
-		std::cout << "Enter 1 (Shift), 2 (Substitution), or q (quit) ";
+		std::cout << "Enter 1 (Shift), 2 (Substitution), 3 (Permutation), 4 (?) or q (quit) ";
 		std::cin >> userInput;
 
 		switch (userInput) {
@@ -41,6 +41,9 @@ int main(int argc, char* argv[]) {
 			break;
 		case '2':
 			Substitution_Cipher(cipher);
+			break;
+		case '3':
+			Permutation_Cipher(cipher);
 			break;
 		}
 		

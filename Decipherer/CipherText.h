@@ -39,7 +39,9 @@ public:
 	void printMonogramFrequency();
 	void printBigramFrequency();
 	void printTrigramFrequency();
+	void permuteData(int key);
 	std::string getOriginalText();
+	std::string getModifiedText();
 	std::vector<SubText> getOrderedMonograms() { return orderedMonograms; };
 	std::vector<SubText> getMonograms() { return monograms; };
 	std::vector<SubText> getOrderedBigrams() { return orderedBigrams; };

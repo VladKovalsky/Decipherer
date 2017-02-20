@@ -11,5 +11,6 @@
 
 void Shift_Cipher(CipherText cipher);
 void Substitution_Cipher(CipherText cipher);
+void Permutation_Cipher(CipherText cipher);
 
 #endif

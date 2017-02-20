@@ -40,6 +40,7 @@ public:
 	void printMonogramFrequency();
 	void printBigramFrequency();
 	void printTrigramFrequency();
+	void permuteData(int key);
 	std::string getOriginalText();
 	std::string getModifiedText() { return modifiedText; };
 	std::vector<SubText> getOrderedMonograms() { return orderedMonograms; };

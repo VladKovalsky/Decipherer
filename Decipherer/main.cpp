@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 	char userInput = ' ';
 
 	while (userInput != 'q') {
-		std::cout << "Enter 1 (Shift), 2 (Substitution), 3 (Vigenere), p (output current plaintext to file), or q (quit) ";
+		std::cout << "Enter 1 (Shift), 2 (Substitution), 3 (Vigenere), 4 (Permutation), p (output current plaintext to file), or q (quit) ";
 		std::cin >> userInput;
 
 		switch (userInput) {
@@ -45,6 +45,9 @@ int main(int argc, char* argv[]) {
 			break;
 		case '3':
 			Vigenere_Cipher(cipher);
+			break;
+		case '4':
+			Permutation_Cipher(cipher);
 			break;
 		case 'p':
 			outp << cipher.getModifiedText();

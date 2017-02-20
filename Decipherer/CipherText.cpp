@@ -14,6 +14,15 @@ CipherText::CipherText(std::string text) {
 	std::cout << "Cypher text obtained from file: " << std::endl;
 	std::cout << this->modifiedText << std::endl;
 
+	//Index of Coincidence calculation (does not need to be in a function?)
+	int i = 0;
+	for (i = 0; i < 26; i++) {
+	IC = IC + (monograms[i].getFreq() * (monograms[i].getFreq() - 1));
+	}
+	IC = IC / (originalText.length() * (originalText.length() - 1));
+
+	std::cout << "Index of Coincidence: " << std::endl;
+
 }
 
 

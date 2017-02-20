@@ -26,6 +26,8 @@ private:
 	std::vector<SubText> orderedBigrams;
 	std::vector<SubText> orderedTrigrams;
 
+	int IC;
+
 	void createComponents();
 	void setFrequencies();
 	void order();

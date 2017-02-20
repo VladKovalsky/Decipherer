@@ -35,7 +35,7 @@ public:
 	CipherText() {};
 	CipherText(std::string text);
 	void buildModifiedText();
-	void CipherText::buildModifiedText(std::string key);
+	void buildModifiedText(std::string key);
 	void swapLetters(int loc1, int loc2);
 	void printMonogramFrequency();
 	void printBigramFrequency();

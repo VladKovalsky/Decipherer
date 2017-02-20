@@ -8,6 +8,8 @@
 #define DECIPHER_H
 
 #include "CipherText.h"
+#include <algorithm>
+#include <fstream>
 
 void Shift_Cipher(CipherText cipher);
 void Substitution_Cipher(CipherText cipher);

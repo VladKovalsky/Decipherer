@@ -179,7 +179,6 @@ void CipherText::order()
 }
 
 std::string CipherText::getOriginalText() {return this->originalText;}
-std::string CipherText::getModifiedText() {return this->modifiedText;};
 
 void CipherText::permuteData(int key) {
 	std::string permuteData = this->originalText;

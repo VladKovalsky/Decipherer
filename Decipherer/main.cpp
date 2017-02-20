@@ -12,7 +12,6 @@
 #include "Decipher.h"
 int main(int argc, char* argv[]) {
 
-	std::cout << argc;
 	if (argc != 3) {
 		std::cout << "Correct usage: Decipherer inputFile outputFile" << std::endl;
 		return -1;
@@ -39,15 +38,19 @@ int main(int argc, char* argv[]) {
 		switch (userInput) {
 		case '1':
 			Shift_Cipher(cipher);
+			outp << cipher.getModifiedText();
 			break;
 		case '2':
 			Substitution_Cipher(cipher);
+			outp << cipher.getModifiedText();
 			break;
 		case '3':
 			Vigenere_Cipher(cipher);
+			outp << cipher.getModifiedText();
 			break;
 		case '4':
 			Permutation_Cipher(cipher);
+			outp << cipher.getModifiedText();
 			break;
 		case 'p':
 			outp << cipher.getModifiedText();
@@ -55,6 +58,7 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
+
 	outp.close();
 	inp.close();
 

@@ -10,6 +10,6 @@
 #include "CipherText.h"
 
 void Shift_Cipher(CipherText cipher);
-void Substitution_Cipher(CipherText cipher);
+void Substitution_Cipher(std::string input);
 
 #endif

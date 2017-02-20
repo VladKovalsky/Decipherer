@@ -32,12 +32,12 @@ private:
 public:
 	CipherText() {};
 	CipherText(std::string text);
-	CipherText(std::string text, int typeGram);
-	void buildModifiedText(int type);
+	void buildModifiedText();
 	void swapLetters(int loc1, int loc2);
 	void printMonogramFrequency();
 	void printBigramFrequency();
 	void printTrigramFrequency();
+	std::string getOriginalText();
 	std::vector<SubText> getOrderedMonograms() { return orderedMonograms; };
 	std::vector<SubText> getMonograms() { return monograms; };
 	std::vector<SubText> getOrderedBigrams() { return orderedBigrams; };

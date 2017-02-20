@@ -24,7 +24,7 @@ void Shift_Cipher(CipherText cipher)
 					if (i + shiftAmount > 25) shiftAmount = -26 + shiftAmount;
 					cipher.swapLetters(i, (i + shiftAmount));
 				}
-				cipher.buildModifiedText(1); // int 1 means monograms
+				cipher.buildModifiedText(); // int 1 means monograms
 			}
 			break;
 
@@ -39,7 +39,7 @@ void Shift_Cipher(CipherText cipher)
 		}
 	}
 }
-void Substitution_Cipher(std::string input) {
+void Substitution_Cipher(CipherText cipher) {
 	char userInput = ' ';
 	int shiftAmount = 0;
 	int recShift = 0;
@@ -47,8 +47,8 @@ void Substitution_Cipher(std::string input) {
 	char quit = NULL;
 	char FROM, FROM2, FROM3 = NULL;
 	char TO, TO2, TO3 = NULL;
-	CipherText cipher(input, 1);// int 1 means monograms
-	std::vector<SubText> orderMono = cipher.getOrderedMonograms();
+	std::string input = cipher.getOriginalText();
+	std::cout << input << std::endl;
 	//	std::vector<SubText> orderMono = cipher.getOrderedMonograms();
 	//	std::vector<SubText> orderMono = cipher.getOrderedMonograms();
 	while (userInput != 'q') {

@@ -10,44 +10,22 @@ CipherText::CipherText(std::string text) {
 
 	order();
 
-	//	buildModifiedText();
+	buildModifiedText();
 	std::cout << "Cypher text obtained from file: " << std::endl;
 	std::cout << this->modifiedText << std::endl;
 
 }
-CipherText::CipherText(std::string text, int typeGram) {
-	this->originalText = text;
-	this->modifiedText = "";
 
-	createComponents();
 
-	order();
-
-	buildModifiedText(typeGram);
-	std::cout << "Cypher text obtained from file: " << std::endl;
-	std::cout << text << std::endl;
-
-}
-
-void CipherText::buildModifiedText(int type) {
+void CipherText::buildModifiedText() {
 	int i = 0;
 
 	this->modifiedText = "";
-	if (type == 1) {
+
 		for (i = 0; i < originalText.size(); i++) {
 			modifiedText.push_back(monograms[originalText[i] - 65].getString()[0]);
 		}
-	}
-	else if (type == 2) {
-		for (i = 0; i < originalText.size(); i++) {
-			modifiedText.push_back(bigrams[originalText[i] - 65].getString()[0]);
-		}
-	}
-	else {
-		for (i = 0; i < originalText.size(); i++) {
-			modifiedText.push_back(trigrams[originalText[i] - 65].getString()[0]);
-		}
-	}
+
 	std::cout << "Current text: " << std::endl;
 	std::cout << modifiedText << std::endl;
 }
@@ -182,4 +160,8 @@ void CipherText::order()
 		this->orderedTrigrams.push_back(max);
 		temp.erase(temp.begin() + loc);
 	}
+}
+
+std::string CipherText::getOriginalText() {
+	return this->originalText;
 }

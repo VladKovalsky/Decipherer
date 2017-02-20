@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 
 	getline(inp, inputText);
 
-	//	CipherText cipher(inputText);
+	CipherText cipher(inputText);
 
 	char userInput = ' ';
 
@@ -37,16 +37,13 @@ int main(int argc, char* argv[]) {
 
 		switch (userInput) {
 		case '1':
-		{
-			CipherText cipher(inputText, 1);
 			Shift_Cipher(cipher);
 			break;
-		}
-		case '2': {
-			Substitution_Cipher(inputText);
+		case '2':
+			Substitution_Cipher(cipher);
 			break;
 		}
-		}
+		
 
 	}
 

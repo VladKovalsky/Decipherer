@@ -9,10 +9,7 @@ CipherText::CipherText(std::string text) {
 	createComponents();
 
 	order();
-	//test
 	buildModifiedText();
-	std::cout << "Cypher text obtained from file: " << std::endl;
-	std::cout << this->modifiedText << std::endl;
 
 	//Index of Coincidence calculation (does not need to be in a function?)
 	int i = 0;
@@ -20,8 +17,6 @@ CipherText::CipherText(std::string text) {
 	IC = IC + (monograms[i].getFreq() * (monograms[i].getFreq() - 1));
 	}
 	IC = IC / (originalText.length() * (originalText.length() - 1));
-
-	std::cout << "Index of Coincidence: " << std::endl;
 
 }
 
@@ -34,9 +29,20 @@ void CipherText::buildModifiedText() {
 		for (i = 0; i < originalText.size(); i++) {
 			modifiedText.push_back(monograms[originalText[i] - 65].getString()[0]);
 		}
+}
 
-	std::cout << "Current text: " << std::endl;
-	std::cout << modifiedText << std::endl;
+void CipherText::buildModifiedText(std::string key) {
+	int i = 0;
+
+	this->modifiedText = "";
+
+	int shiftAmm = 0;
+
+	for (i = 0; i < originalText.size(); i++) {
+		shiftAmm = key[i%key.size()] - 65;
+		if ((originalText[i] - 65 - shiftAmm) < 0) shiftAmm = shiftAmm - 26;
+		modifiedText.push_back(originalText[i] - shiftAmm);
+	}
 }
 
 
@@ -58,7 +64,7 @@ void CipherText::printMonogramFrequency()
 void CipherText::printBigramFrequency()
 {
 	int i = 0;
-	std::cout << "Monogram frequencies: " << std::endl;
+	std::cout << "Bigram frequencies: " << std::endl;
 	for (i = 0; i < orderedBigrams.size(); i++) {
 		std::cout << orderedBigrams[i].getString() << " " << orderedBigrams[i].getFreq() << " |";
 	}
@@ -66,7 +72,7 @@ void CipherText::printBigramFrequency()
 void CipherText::printTrigramFrequency()
 {
 	int i = 0;
-	std::cout << "Monogram frequencies: " << std::endl;
+	std::cout << "Trigram frequencies: " << std::endl;
 	for (i = 0; i < orderedTrigrams.size(); i++) {
 		std::cout << orderedTrigrams[i].getString() << " " << orderedTrigrams[i].getFreq() << " |";
 	}
@@ -130,7 +136,7 @@ void CipherText::order()
 	int i = 0;
 	int loc = 0;
 	std::vector<SubText> temp = this->monograms;
-	while (orderedMonograms.size() < 20) {
+	while (temp.size() > 0 && orderedMonograms.size() < 26) {
 		loc = 0;
 		SubText max = temp[0];
 		for (i = 1; i < temp.size(); i++) {
@@ -143,7 +149,7 @@ void CipherText::order()
 		temp.erase(temp.begin() + loc);
 	}
 	temp = this->bigrams;
-	while (orderedBigrams.size() < 20) {
+	while (temp.size() > 0 && orderedBigrams.size() < 20) {
 		loc = 0;
 		SubText max = temp[0];
 		for (i = 1; i < temp.size(); i++) {
@@ -157,7 +163,7 @@ void CipherText::order()
 
 	}
 	temp = this->trigrams;
-	while (orderedTrigrams.size() < 20) {
+	while (temp.size() > 0 && orderedTrigrams.size() < 20) {
 		loc = 0;
 		SubText max = temp[0];
 		for (i = 1; i < temp.size(); i++) {

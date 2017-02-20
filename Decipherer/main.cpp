@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
 
 	std::string inputText = "";
 	std::ifstream inp(argv[1]);
+	std::ofstream outp(argv[2]);
 	if (!inp) {
 		std::cout << "File could not be found" << std::endl;
 		return -1;
@@ -32,7 +33,7 @@ int main(int argc, char* argv[]) {
 	char userInput = ' ';
 
 	while (userInput != 'q') {
-		std::cout << "Enter 1 (Shift), 2 (Substitution), or q (quit) ";
+		std::cout << "Enter 1 (Shift), 2 (Substitution), 3 (Vigenere), p (output current plaintext to file), or q (quit) ";
 		std::cin >> userInput;
 
 		switch (userInput) {
@@ -42,11 +43,16 @@ int main(int argc, char* argv[]) {
 		case '2':
 			Substitution_Cipher(cipher);
 			break;
+		case '3':
+			Vigenere_Cipher(cipher);
+			break;
+		case 'p':
+			outp << cipher.getModifiedText();
+			break;
 		}
-		
 
 	}
-
+	outp.close();
 	inp.close();
 
 	return 0;

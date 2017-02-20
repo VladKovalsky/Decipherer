@@ -15,7 +15,7 @@ void Shift_Cipher(CipherText cipher)
 		case 's':
 		{
 			recShift = orderMono[0].getString()[0] - 'E';
-			if (recShift < 0) recShift = -26 + recShift;
+			if (recShift < 0) recShift = 26 + recShift;
 			std::cout << "Recomended shift is " << recShift << " based on the frequency of the cipher and english E" << std::endl;
 			std::cout << "Enter shift amount (0-25) ";
 			std::cin >> shiftAmount;
@@ -33,6 +33,7 @@ void Shift_Cipher(CipherText cipher)
 		{
 			cipher.printMonogramFrequency();
 			std::cout << std::endl;
+			break;
 		}
 		default:
 			break;
@@ -100,4 +101,156 @@ void Substitution_Cipher(CipherText cipher) {
 
 
 
+}
+
+void Vigenere_Cipher(CipherText cipher){
+
+	char userInput = ' ';
+	int i = 0;
+	std::vector<SubText> orderMono = cipher.getOrderedMonograms();
+	std::vector<SubText> orderBi = cipher.getOrderedBigrams();
+
+	std::string userString = "";
+	int loc = -1;
+	int j = 0;
+	bool foundLength = false;
+	int userLength = 0;
+	int recShift = 0;
+	while (userInput != 'q') {
+		std::cout << "Enter l (key length guess), s (substring based on key length), d (decrypt with key), f (monogram frequencies), b (bigram frequencies), or q (quit) ";
+		std::cin >> userInput;
+		switch (userInput)
+		{
+		case 'l':
+		{
+			std::vector<key_length> keys;
+			std::vector<key_length> temp;
+
+			std::cout << "Enter a bigram to use to check possible key lengths ";
+			std::cin >> userString;
+			loc = -1;
+			for (i = 0; i < cipher.getOriginalText().length() - 1; i++) {
+				if (userString == cipher.getOriginalText().substr(i, 2)) {
+					if (loc == -1) {
+						loc = i;
+					}
+					else {
+						j = 0;
+						foundLength = false;
+						for (j = 0; j < keys.size(); j++) {
+							if (keys[j].length == (i - loc)) {
+								keys[j].freq++;
+								foundLength = true;
+							}
+						}
+						if (!foundLength) {
+							key_length newKey;
+							newKey.freq = 1;
+							newKey.length = (i - loc);
+							keys.push_back(newKey);
+						}
+
+						loc = i;
+					}
+				}
+			}
+			temp = keys;
+			keys.clear();
+			int maxLoc = 0;
+			while(temp.size() > 0) {
+				key_length tempKey;
+				tempKey.length = 0;
+				tempKey.freq = 0;
+				maxLoc = 0;
+				for(i = 0; i < temp.size(); i++) {
+					if (temp[i].freq >= temp[maxLoc].freq) {
+						maxLoc = i;
+					}
+				}
+				tempKey.length = temp[maxLoc].length;
+				tempKey.freq = temp[maxLoc].freq;
+				keys.push_back(tempKey);
+				temp.erase(temp.begin() + maxLoc);
+			}
+			
+			std::cout << "(Length / Frequency)" << std::endl;
+			for (i = 0; (i < keys.size() || i < 20); i++) {
+				std::cout << "(" << keys[i].length << " / " << keys[i].freq << ") | ";
+			}
+			std::cout << std::endl;
+			
+			keys.clear();
+			temp.clear();
+
+			break;
+
+		}
+
+		case 's':
+		{
+			std::cout << "Enter a test key length N ";
+			std::cin >> userLength;
+
+			//Create strings of size key length N  sub strings
+			std::vector<std::string> keySplitStrings;
+			for (i = 0; i < userLength; i++) {
+				std::string temp = "";
+				keySplitStrings.push_back(temp);
+			}
+
+			//fill those substrings according to the position of each character in original text
+			for (i = 0; i < cipher.getOriginalText().length(); i++) {
+				keySplitStrings[i%userLength].push_back(cipher.getOriginalText()[i]);
+			}
+
+			//Now create ciphers with the strings (to use pre-built functions)
+			std::vector<CipherText> keySplitSubTexts;
+			for (i = 0; i < keySplitStrings.size(); i++) keySplitSubTexts.push_back(CipherText(keySplitStrings[i]));
+			keySplitStrings.clear();
+			
+			//Print the most common letter in each substring
+			std::cout << "Most common letter in each substring" << std::endl;
+			for (i = 0; i < keySplitSubTexts.size(); i++) std::cout << keySplitSubTexts[i].getOrderedMonograms()[0].getString();
+			std::cout << std::endl;
+
+			//Give possible shifted key against E
+			std::cout << "Possible key if shifted against E" << std::endl;
+			for (i = 0; i < keySplitSubTexts.size(); i++) {
+				recShift = keySplitSubTexts[i].getOrderedMonograms()[0].getString()[0] - 'E';
+				if (recShift < 0) recShift = 26 + recShift;
+				std::cout << char('A' + recShift);
+			}
+			std::cout << std::endl;
+
+			keySplitSubTexts.clear();
+			break;
+		}
+
+		case 'd':
+		{
+			std::cout << "Enter key to decrypt the message with ";
+			std::cin >> userString;
+
+			cipher.buildModifiedText(userString);
+
+			std::cout << cipher.getModifiedText() << std::endl;
+			break;
+		}
+
+		case 'f':
+		{
+			cipher.printMonogramFrequency();
+			std::cout << std::endl;
+			break;
+		}
+		case 'b':
+		{
+			cipher.printBigramFrequency();
+			std::cout << std::endl;
+			break;
+		}
+		default:
+			break;
+		}
+	}
 }

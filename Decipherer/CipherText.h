@@ -26,7 +26,7 @@ private:
 	std::vector<SubText> orderedBigrams;
 	std::vector<SubText> orderedTrigrams;
 
-	int IC;
+	double IC;
 
 	void createComponents();
 	void setFrequencies();
@@ -35,11 +35,13 @@ public:
 	CipherText() {};
 	CipherText(std::string text);
 	void buildModifiedText();
+	void CipherText::buildModifiedText(std::string key);
 	void swapLetters(int loc1, int loc2);
 	void printMonogramFrequency();
 	void printBigramFrequency();
 	void printTrigramFrequency();
 	std::string getOriginalText();
+	std::string getModifiedText() { return modifiedText; };
 	std::vector<SubText> getOrderedMonograms() { return orderedMonograms; };
 	std::vector<SubText> getMonograms() { return monograms; };
 	std::vector<SubText> getOrderedBigrams() { return orderedBigrams; };

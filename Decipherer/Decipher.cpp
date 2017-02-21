@@ -59,8 +59,7 @@ void Substitution_Cipher(CipherText cipher) {
 	std::string original = cipher.getOriginalText();
 	std::cout << original << std::endl;
 	while (userInput != 'q') {
-		std::cout << "Enter f(Show frequency of monograms,bigrams, and trigrams), p (print plaintext to substitution.txt)" << std::endl;
-		std::cout << "k (if you know the keys) ,or q(quit) ";
+		std::cout << "Enter f(Show frequency of monograms,bigrams, and trigrams), p (print plaintext to substitution.txt), or q(quit) " << std::endl;
 		std::cin >> userInput;
 		switch (userInput)
 		{

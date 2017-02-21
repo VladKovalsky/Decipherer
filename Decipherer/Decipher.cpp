@@ -73,19 +73,21 @@ void Substitution_Cipher(CipherText cipher) {
 			std::cin >> FROM;
 			std::cout << "Type in the letters that you want to change to:" << std::endl;
 			std::cin >> TO;
-			for (int i = 0; i < FROM.size(); i++) {
-				for (int j = 0; j < original.size(); j++) { //make sure the modified text does not mix with the original text
-					if (FROM[i] == original[j]) {
-						modified[j] = TO[i];
+
+			if (FROM.length() == TO.length()) {
+
+				for (int i = 0; i < FROM.size(); i++) {
+					for (int j = 0; j < original.size(); j++) { //make sure the modified text does not mix with the original text
+						if (FROM[i] == original[j]) {
+							modified[j] = TO[i];
+						}
 					}
 				}
+				std::cout << modified << std::endl;
+				cipher.setModifiedText(modified);
 			}
-			std::cout << modified << std::endl;
+			else std::cout << "Entered lengths are not the same" << std::endl;
 			break;
-		}
-		case 'k':
-		{
-
 		}
 		case 'p': {
 			std::ofstream outp("substitution.txt");

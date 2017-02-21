@@ -7,9 +7,8 @@ CipherText::CipherText(std::string text) {
 	this->originalText = text;
 	this->modifiedText = "";
 
-	createComponents();
+	createMonograms();
 
-	order();
 	buildModifiedText();
 
 	//Index of Coincidence calculation (does not need to be in a function?)
@@ -21,6 +20,124 @@ CipherText::CipherText(std::string text) {
 
 }
 
+void CipherText::createMonograms() {
+	//Create monogram data
+	int i = 0;
+	monograms.clear();
+	for (i = 0; i < 26; i++) {
+		SubText newLetter(std::string(1, char(65 + i)));
+		monograms.push_back(newLetter);
+	}
+
+	//Get frequencies of monograms
+	for (i = 0; i < originalText.size(); i++) {
+		monograms.at(originalText.at(i) - 65).incFreq();
+	}
+	
+	//Order by frequency
+	int loc = 0;
+	std::vector<SubText> temp = this->monograms;
+	orderedMonograms.clear();
+	while (temp.size() > 0 && orderedMonograms.size() < 26) {
+		loc = 0;
+		SubText max = temp[0];
+		for (i = 1; i < temp.size(); i++) {
+			if (max.getFreq() < temp[i].getFreq()) {
+				max = temp[i];
+				loc = i;
+			}
+		}
+		this->orderedMonograms.push_back(max);
+		temp.erase(temp.begin() + loc);
+	}
+}
+
+void CipherText::createBigrams() {
+	//Create bigram data
+	int i = 0;
+	bigrams.clear();
+	for (i = 0; i < 26 * 26; i++) {
+		std::string temp = "";
+		temp.push_back(i / 26 + 65);
+		temp.push_back(i % 26 + 65);
+		SubText newSub(temp);
+		bigrams.push_back(newSub);
+	}
+
+	//Set frequencies
+	int loc = 0;
+	std::string substr = "";
+	bool foundSub = false;
+	for (i = 0; i < originalText.size(); i++) {
+		loc = 0;
+		//bigrams
+		if (i < originalText.size() - 1) {
+			substr = originalText.substr(i, 2);
+			loc = (substr[0] - 65) * 26 + (substr[1] - 65);
+			bigrams[loc].incFreq();
+		}
+	}
+	
+	//Order
+	std::vector<SubText> temp = this->bigrams;
+	orderedBigrams.clear();
+	while (temp.size() > 0 && orderedBigrams.size() < 20) {
+		loc = 0;
+		SubText max = temp[0];
+		for (i = 1; i < temp.size(); i++) {
+			if (max.getFreq() < temp[i].getFreq()) {
+				max = temp[i];
+				loc = i;
+			}
+		}
+		this->orderedBigrams.push_back(max);
+		temp.erase(temp.begin() + loc);
+	}
+}
+
+void CipherText::createTrigrams() {
+	int i = 0;
+	//Setting up AAA-ZZZ trigrams
+	trigrams.clear();
+	for (i = 0; i < 26 * 26 * 26; i++) {
+		std::string temp = "";
+		temp.push_back(i / 26 / 26 + 65);
+		temp.push_back(i / 26 % 26 + 65);
+		temp.push_back(i % 26 + 65);
+		SubText newSub(temp);
+		trigrams.push_back(newSub);
+	}
+
+	//Setting frequencies
+	int loc = 0;
+	std::string substr = "";
+	bool foundSub = false;
+	for (i = 0; i < originalText.size(); i++) {
+		loc = 0;
+
+		//trigrams
+		if (i < originalText.size() - 2) {
+			substr = originalText.substr(i, 3);
+			loc = (substr[0] - 65) * 26 * 26 + (substr[1] - 65) * 26 + substr[2] - 65;
+			trigrams[loc].incFreq();
+		}
+	}
+	std::vector<SubText> temp = this->trigrams;
+	orderedTrigrams.clear();
+	while (temp.size() > 0 && orderedTrigrams.size() < 20) {
+		loc = 0;
+		SubText max = temp[0];
+		for (i = 1; i < temp.size(); i++) {
+			if (max.getFreq() < temp[i].getFreq()) {
+				max = temp[i];
+				loc = i;
+			}
+		}
+		this->orderedTrigrams.push_back(max);
+		temp.erase(temp.begin() + loc);
+	}
+
+}
 
 void CipherText::buildModifiedText() {
 	int i = 0;
@@ -76,105 +193,6 @@ void CipherText::printTrigramFrequency()
 	std::cout << "Trigram frequencies: " << std::endl;
 	for (i = 0; i < orderedTrigrams.size(); i++) {
 		std::cout << orderedTrigrams[i].getString() << " " << orderedTrigrams[i].getFreq() << " |";
-	}
-}
-
-void CipherText::createComponents() {
-	int i = 0;
-	//Setting up A-Z monograms
-	for (i = 0; i < 26; i++) {
-		SubText newLetter(std::string(1, char(65 + i)));
-		monograms.push_back(newLetter);
-	}
-	//Setting up AA-ZZ bigrams
-	for (i = 0; i < 26 * 26; i++) {
-		std::string temp = "";
-		temp.push_back(i / 26 + 65);
-		temp.push_back(i % 26 + 65);
-		SubText newSub(temp);
-		bigrams.push_back(newSub);
-	}
-	//Setting up AAA-ZZZ trigrams
-	for (i = 0; i < 26 * 26 * 26; i++) {
-		std::string temp = "";
-		temp.push_back(i / 26 / 26 + 65);
-		temp.push_back(i / 26 % 26 + 65);
-		temp.push_back(i % 26 + 65);
-		SubText newSub(temp);
-		trigrams.push_back(newSub);
-	}
-
-	setFrequencies();
-}
-
-void CipherText::setFrequencies() {
-	int i = 0;
-	int j = 0;
-	int locNum = 0;
-	std::string substr = "";
-	bool foundSub = false;
-	for (i = 0; i < originalText.size(); i++) {
-		locNum = 0;
-		monograms.at(originalText.at(i) - 65).incFreq();
-		//bigrams
-		if (i < originalText.size() - 1) {
-			substr = originalText.substr(i, 2);
-			locNum = (substr[0] - 65) * 26 + (substr[1] - 65);
-			bigrams[locNum].incFreq();
-		}
-
-		//trigrams
-		if (i < originalText.size() - 2) {
-			substr = originalText.substr(i, 3);
-			locNum = (substr[0] - 65) * 26 * 26 + (substr[1] - 65) * 26 + substr[2] - 65;
-			trigrams[locNum].incFreq();
-		}
-	}
-}
-
-void CipherText::order()
-{
-	int i = 0;
-	int loc = 0;
-	std::vector<SubText> temp = this->monograms;
-	while (temp.size() > 0 && orderedMonograms.size() < 26) {
-		loc = 0;
-		SubText max = temp[0];
-		for (i = 1; i < temp.size(); i++) {
-			if (max.getFreq() < temp[i].getFreq()) {
-				max = temp[i];
-				loc = i;
-			}
-		}
-		this->orderedMonograms.push_back(max);
-		temp.erase(temp.begin() + loc);
-	}
-	temp = this->bigrams;
-	while (temp.size() > 0 && orderedBigrams.size() < 20) {
-		loc = 0;
-		SubText max = temp[0];
-		for (i = 1; i < temp.size(); i++) {
-			if (max.getFreq() < temp[i].getFreq()) {
-				max = temp[i];
-				loc = i;
-			}
-		}
-		this->orderedBigrams.push_back(max);
-		temp.erase(temp.begin() + loc);
-
-	}
-	temp = this->trigrams;
-	while (temp.size() > 0 && orderedTrigrams.size() < 20) {
-		loc = 0;
-		SubText max = temp[0];
-		for (i = 1; i < temp.size(); i++) {
-			if (max.getFreq() < temp[i].getFreq()) {
-				max = temp[i];
-				loc = i;
-			}
-		}
-		this->orderedTrigrams.push_back(max);
-		temp.erase(temp.begin() + loc);
 	}
 }
 

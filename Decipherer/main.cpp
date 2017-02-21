@@ -26,6 +26,8 @@ int main(int argc, char* argv[]) {
 	getline(inp, inputText);
 
 	CipherText cipher(inputText);
+	cipher.createBigrams();
+	cipher.createTrigrams();
 
 	char userInput = ' ';
 

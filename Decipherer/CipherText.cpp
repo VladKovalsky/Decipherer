@@ -198,9 +198,8 @@ void CipherText::printTrigramFrequency()
 
 std::string CipherText::getOriginalText() {return this->originalText;}
 
-void CipherText::permuteData(int key) {
+void CipherText::permuteData(int key, std::vector<std::vector<char>>& TwoDVector) {
 	std::string permuteData = this->originalText;
-	std::vector<std::vector<char>> TwoDVector;
 	int i, j ,k = 0;
 	int flag = 0;
 	for (i = 0; k < permuteData.size(); i++) {
@@ -220,6 +219,10 @@ void CipherText::permuteData(int key) {
 		}
 		TwoDVector.push_back(temp);
 	}
+	for (i = 0; i < key; i++) {
+		std::cout << i;
+	}
+	std::cout << std::endl;
 	for (i = 0; i < TwoDVector.size(); i++) {
 		for (j = 0; j < key; j++) {
 			if (TwoDVector[i][j] == '-') {

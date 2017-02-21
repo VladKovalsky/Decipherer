@@ -251,21 +251,54 @@ void Vigenere_Cipher(CipherText cipher){
 void Permutation_Cipher(CipherText cipher) {
 	char userInput = ' ';
 	int keyLen = 0;
-	std::vector<SubText> orderPermu = cipher.getOrderedMonograms();
+	int FROM, TO = 0;
+	char temp;
+	std::vector<std::vector<char>> TwoDVector;
 	while (userInput != 'q') {
-		std::cout << "Enter f(frequency analysis), p (print plaintext to permutation.txt), or q (quit) ";
+		cipher.printMonogramFrequency(); std::cout << std::endl;
+		cipher.printBigramFrequency(); std::cout << std::endl;
+		cipher.printTrigramFrequency(); std::cout << std::endl;
+		std::cout << "Enter f(for inputting key), s (switch column,exist out of bound case) ,p (print plaintext to permutation.txt), or q (quit) ";
 		std::cin >> userInput;
 		switch (userInput)
 		{
 		case 'f':
 		{
-			cipher.printMonogramFrequency(); std::cout << std::endl;
-			cipher.printBigramFrequency(); std::cout << std::endl;
-			cipher.printTrigramFrequency(); std::cout << std::endl;
 			std::cout << "Propose key length:"; std::cin >> keyLen;
-			cipher.permuteData(keyLen);
+			cipher.permuteData(keyLen,TwoDVector);
 			break;
 		}
+		//case 's':
+		//{
+		//	std::cout << "Input the column you want to change from and the column you want to change to" << std::endl;
+		//	std::cout << "Change from ";
+		//	std::cin >> FROM;
+		//	std::cout << "To";
+		//	std::cin >> TO;
+		//	for (int i = 0; i < TwoDVector.size(); i++) {
+		//		if (TwoDVector[i][FROM] == '-') {
+		//			break;
+		//		}
+		//		if (TwoDVector[i][TO] == '-') {
+		//			break;
+		//		}
+		//		temp = TwoDVector[i][FROM];
+		//		TwoDVector[i][FROM] = TwoDVector[i][TO];
+		//		TwoDVector[i][TO] = temp;
+
+		//	}
+		//	for (int i = 0; i < TwoDVector.size(); i++) {
+		//		for (int j = 0; j < keyLen; j++) {
+		//			if (TwoDVector[i][j] == '-') {
+		//				break;
+		//			}
+		//			else {
+		//				std::cout << TwoDVector[i][j];
+		//			}
+		//		}
+		//		std::cout << std::endl;
+		//	}
+		//}
 		case 'p': {
 			std::ofstream outp("permutation.txt");
 			outp << cipher.getModifiedText();

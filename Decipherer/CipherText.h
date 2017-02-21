@@ -40,7 +40,7 @@ public:
 	void printMonogramFrequency();
 	void printBigramFrequency();
 	void printTrigramFrequency();
-	void permuteData(int key);
+	void CipherText::permuteData(int key, std::vector<std::vector<char>>& TwoDVector);
 	void setModifiedText(std::string text) { this->modifiedText = text; };
 	double getIC() { return IC; };
 	std::string getOriginalText();

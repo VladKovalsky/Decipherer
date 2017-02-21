@@ -24,6 +24,7 @@ void Shift_Cipher(CipherText cipher)
 					cipher.swapLetters(i, (i + shiftAmount));
 				}
 				cipher.buildModifiedText(); // int 1 means monograms
+				std::cout << cipher.getModifiedText() << std::endl;
 			}
 			break;
 

@@ -114,9 +114,11 @@ void Vigenere_Cipher(CipherText cipher){
 	std::vector<key> temp;
 	int loc = -1;
 	int j = 0;
+	int k = 0;
 	bool foundLength = false;
 	int userLength = 0;
 	int recShift = 0;
+	double avgIC = 0;
 	std::string userString = "";
 	std::string subStr = "";
 	while (userInput != 'q') {
@@ -136,18 +138,25 @@ void Vigenere_Cipher(CipherText cipher){
 			//Cycle through possible key lengths, create sub cipher texts, and calcualte IC value for storing them in keyLengthICs vector
 			for (i = 0; i < userLength; i++) {
 				subStr = "";
-				for (j = 0; j < cipher.getOriginalText().length() - i; j = j + i + 1)
-					subStr.push_back(cipher.getOriginalText()[j]);
-				CipherText subCipher(subStr); //We are treating each subtext as its own cipher text (for functions)
+				avgIC = 0;
+				//This will loop through all shifted letters (higher numbers MASSIVELY increase processing time)
+				for (j = 0; j <= i; j++) { //Consider not using to save time (less accurate results) 
+					subStr.clear();
+					for (k = j; k < cipher.getOriginalText().length() - j- i; k += i + 1)
+						subStr.push_back(cipher.getOriginalText()[k]);
+					CipherText subCipher(subStr); //We are treating each subtext as its own cipher text (for functions)
+					avgIC += subCipher.getIC();
+				}
 
+				avgIC = avgIC / j;
 				//Sort search for where to place key length and IC
 				loc = keys.size();
 				for (j = 0; j < keys.size() && loc == keys.size(); j++) {
-					if (subCipher.getIC() > keys[j].IC) loc = j;
+					if (avgIC > keys[j].IC) loc = j;
 				}
 
 				key newKey;
-				newKey.IC = subCipher.getIC();
+				newKey.IC = avgIC;
 				newKey.length = i + 1;
 
 				keys.insert(keys.begin() + loc, newKey);

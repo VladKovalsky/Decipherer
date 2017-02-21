@@ -42,6 +42,7 @@ public:
 	void printTrigramFrequency();
 	void permuteData(int key);
 	void setModifiedText(std::string text) { this->modifiedText = text; };
+	double getIC() { return IC; };
 	std::string getOriginalText();
 	std::string getModifiedText() { return modifiedText; };
 	std::vector<SubText> getOrderedMonograms() { return orderedMonograms; };

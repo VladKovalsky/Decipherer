@@ -16,8 +16,8 @@ void Substitution_Cipher(CipherText cipher);
 void Vigenere_Cipher(CipherText cipher);
 void Permutation_Cipher(CipherText cipher);
 
-struct key_length {
+struct key {
 	int length;
-	int freq;
+	double IC;
 };
 #endif

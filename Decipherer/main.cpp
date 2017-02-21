@@ -32,6 +32,11 @@ int main(int argc, char* argv[]) {
 	char userInput = ' ';
 
 	while (userInput != 'q') {
+		std::cout << "Cipher text has an IC of " << cipher.getIC() << " : Recommend usage of ";
+		if (cipher.getIC() < 0.06) std::cout << "Vigenere, Permutation, or One-Time Key Pad";
+		else std::cout << "Shift or Substitution";
+
+		std::cout << std::endl;
 		std::cout << "Enter 1 (Shift), 2 (Substitution), 3 (Vigenere), 4 (Permutation), or q (quit) ";
 		std::cin >> userInput;
 

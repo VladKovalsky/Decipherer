@@ -111,78 +111,54 @@ void Vigenere_Cipher(CipherText cipher){
 	int i = 0;
 	std::vector<SubText> orderMono = cipher.getOrderedMonograms();
 	std::vector<SubText> orderBi = cipher.getOrderedBigrams();
-
-	std::string userString = "";
+	std::vector<key> keys;
+	std::vector<key> temp;
 	int loc = -1;
 	int j = 0;
 	bool foundLength = false;
 	int userLength = 0;
 	int recShift = 0;
+	std::string userString = "";
+	std::string subStr = "";
 	while (userInput != 'q') {
-		std::cout << "Enter l (key length guess), s (substring based on key length), d (decrypt with key), f (monogram frequencies), b (bigram frequencies), p (print plaintext to vigenere.txt), or q (quit) ";
+		std::cout << "Enter k (key length guess), s (non shifted key (and guess) based on key length), d (decrypt with key), f (monogram frequencies), b (bigram frequencies), p (print plaintext to vigenere.txt), or q (quit) ";
 		std::cin >> userInput;
 		switch (userInput)
 		{
-		case 'l':
+		case 'k':
 		{
-			std::vector<key_length> keys;
-			std::vector<key_length> temp;
-
-			std::cout << "Enter a bigram to use to check possible key lengths ";
-			std::cin >> userString;
-			loc = -1;
-			for (i = 0; i < cipher.getOriginalText().length() - 1; i++) {
-				if (userString == cipher.getOriginalText().substr(i, 2)) {
-					if (loc == -1) {
-						loc = i;
-					}
-					else {
-						j = 0;
-						foundLength = false;
-						for (j = 0; j < keys.size(); j++) {
-							if (keys[j].length == (i - loc)) {
-								keys[j].freq++;
-								foundLength = true;
-							}
-						}
-						if (!foundLength) {
-							key_length newKey;
-							newKey.freq = 1;
-							newKey.length = (i - loc);
-							keys.push_back(newKey);
-						}
-
-						loc = i;
-					}
-				}
-			}
-			temp = keys;
-			keys.clear();
-			int maxLoc = 0;
-			while(temp.size() > 0) {
-				key_length tempKey;
-				tempKey.length = 0;
-				tempKey.freq = 0;
-				maxLoc = 0;
-				for(i = 0; i < temp.size(); i++) {
-					if (temp[i].freq >= temp[maxLoc].freq) {
-						maxLoc = i;
-					}
-				}
-				tempKey.length = temp[maxLoc].length;
-				tempKey.freq = temp[maxLoc].freq;
-				keys.push_back(tempKey);
-				temp.erase(temp.begin() + maxLoc);
-			}
-			
-			std::cout << "(Length / Frequency)" << std::endl;
-			for (i = 0; (i < keys.size() || i < 20); i++) {
-				std::cout << "(" << keys[i].length << " / " << keys[i].freq << ") | ";
-			}
-			std::cout << std::endl;
-			
 			keys.clear();
 			temp.clear();
+
+			//Get max key length from user
+			std::cout << "Enter a maximum key length ";
+			std::cin >> userLength;
+
+			//Cycle through possible key lengths, create sub cipher texts, and calcualte IC value for storing them in keyLengthICs vector
+			for (i = 0; i < userLength; i++) {
+				subStr = "";
+				for (j = 0; j < cipher.getOriginalText().length() - i; j = j + i + 1)
+					subStr.push_back(cipher.getOriginalText()[j]);
+				CipherText subCipher(subStr); //We are treating each subtext as its own cipher text (for functions)
+
+				//Sort search for where to place key length and IC
+				loc = keys.size();
+				for (j = 0; j < keys.size() && loc == keys.size(); j++) {
+					if (subCipher.getIC() > keys[j].IC) loc = j;
+				}
+
+				key newKey;
+				newKey.IC = subCipher.getIC();
+				newKey.length = i + 1;
+
+				keys.insert(keys.begin() + loc, newKey);
+			}
+
+			std::cout << "(Length / IC)" << std::endl;
+			for (i = 0; i < keys.size(); i++) {
+				std::cout << "(" << keys[i].length << " / " << keys[i].IC << ") | ";
+			}
+			std::cout << std::endl;
 
 			break;
 

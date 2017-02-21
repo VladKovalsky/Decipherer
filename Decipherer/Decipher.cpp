@@ -244,25 +244,19 @@ void Permutation_Cipher(CipherText cipher) {
 	int keyLen = 0;
 	std::vector<SubText> orderPermu = cipher.getOrderedMonograms();
 	while (userInput != 'q') {
-		std::cout << "Enter m (monogram frequencies), b (bigram frequencies), t (trigram frequencies), p (print plaintext to permutation.txt), or q (quit) ";
+		std::cout << "Enter f(frequency analysis), p (print plaintext to permutation.txt), or q (quit) ";
 		std::cin >> userInput;
 		switch (userInput)
 		{
-		case 'm':
+		case 'f':
 		{
 			cipher.printMonogramFrequency(); std::cout << std::endl;
+			cipher.printBigramFrequency(); std::cout << std::endl;
+			cipher.printTrigramFrequency(); std::cout << std::endl;
 			std::cout << "Propose key length:"; std::cin >> keyLen;
 			cipher.permuteData(keyLen);
 			break;
 		}
-		case 'b':
-		{
-			cipher.printBigramFrequency(); std::cout << std::endl;
-			std::cout << "Propose key length:"; std::cin >> keyLen;
-
-			break;
-		}
-
 		case 'p': {
 			std::ofstream outp("permutation.txt");
 			outp << cipher.getModifiedText();
@@ -270,13 +264,6 @@ void Permutation_Cipher(CipherText cipher) {
 
 			std::cout << "Plaintext printed to permutation.txt in the root project directory" << std::endl;
 
-			break;
-		}
-
-		case 't':
-		{
-			cipher.printTrigramFrequency(); std::cout << std::endl;
-			std::cout << "Propose key length:"; std::cin >> keyLen;
 			break;
 		}
 		default:
